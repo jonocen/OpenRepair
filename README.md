@@ -12,10 +12,13 @@ actively working on it 🙂
 # Installation
 
 To build OpenRepair, follow these steps:
+1.  Run git clone
 
-1.  Run make:
+           git clone https://github.com/jonocen/OpenRepair.git
 
-        make
+2.  Run make:
+
+           make
 
 
 thats all :)
