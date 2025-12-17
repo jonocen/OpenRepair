@@ -3,6 +3,10 @@
 #include <string.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include <sys/ioctl.h>
+#include <linux/fs.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 int main(int argc, char *argv[]) {
     // Parse command line arguments
@@ -18,6 +22,10 @@ int main(int argc, char *argv[]) {
                     update_percent = 100;
                 }
                 break;
+            case 'h':
+                printf("A Basic tool for repairing Unix Like systems and to prepare drives.\n", argv[0]);
+                printf("Usage: %s [-u is for setting the update interval. (basic interval is 100)]\n", argv[0]);
+                return 0;
             default:
                 printf("Usage: %s [-u update_percentage]\n", argv[0]);
                 return 1;
@@ -98,12 +106,18 @@ int main(int argc, char *argv[]) {
             return 0;
         }
         
-        // Prepare buffer and get filesystem stats
+        // Prepare buffer and get device size
         char bs[4096];
-        statfs(name, &filesystem);
-        unsigned long blocks = filesystem.f_blocks;
-        memset(bs, 0, sizeof(bs));  // Fill buffer with zeros
         
+        // Get actual device size in bytes
+        int fd = open(name, O_RDONLY);
+        unsigned long long device_size_bytes = 0;
+        if (fd >= 0) {
+            ioctl(fd, BLKGETSIZE64, &device_size_bytes);
+            close(fd);
+        }
+        unsigned long blocks = device_size_bytes / sizeof(bs);
+        memset(bs, 0, sizeof(bs));  // Fill buffer with zeros
         // Write zeros to device
         unsigned long interval = blocks / update_percent;
         printf("Writing zeros to device, this may take a while.\n");
@@ -131,5 +145,9 @@ int main(int argc, char *argv[]) {
     } else {
         return 0;
     }
+    return 0;
+}
+int repair_debian_kernel(){
+    //being implemented
     return 0;
 }
