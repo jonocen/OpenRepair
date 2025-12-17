@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
-#include "openrepair.h"
+#include "libs/openrepair.h"
 //CLI
 int main(int argc, char *argv[]) {
     int update_interval = 100;
