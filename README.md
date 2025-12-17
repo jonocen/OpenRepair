@@ -13,16 +13,12 @@ actively working on it 🙂
 
 To build OpenRepair, follow these steps:
 
-1.  Create a build directory:
-
-        mkdir build
-
-2.  Run make:
+1.  Run make:
 
         make
 
-3.  The compiled output will be available in the build folder.
 
+thats all :)
 ------------------------------------------------------------------------
 
 Feel free to report issues or contribute!
