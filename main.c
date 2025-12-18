@@ -5,9 +5,9 @@
 //CLI
 int main(int argc, char *argv[]) {
     int update_interval = 100;
-    int buffer_size;
+    int buffer_size = 4096;
     int opt;
-    while ((opt = getopt(argc, argv, "u:h")) != -1) {
+    while ((opt = getopt(argc, argv, "u:b:h")) != -1) {
         switch (opt) {
             case 'u':
                 update_interval = atoi(optarg);
@@ -18,20 +18,21 @@ int main(int argc, char *argv[]) {
                 break;
             case 'b':
                     buffer_size = atoi(optarg);
-                    if (buffer_size <= 0) {
-                        printf("no or invalid buffer size specified, using recommended default\n");
+                    if (buffer_size <= 0 || buffer_size > 1048576) {
+                        printf("Invalid buffer size (must be 1-1048576 bytes). Using default 4096\n");
                         buffer_size = 4096; 
                     }
                 break;
             case 'h':
                 printf("OpenRepair - A tool for repairing Unix-Like systems and preparing drives\n");
-                printf("Usage: %s [-u update_interval] [-h]\n", argv[0]);
+                printf("Usage: %s [-u update_interval] [-b buffer_size] [-h]\n", argv[0]);
                 printf("Options:\n");
                 printf("  -u <percent>  Set progress update interval (default: 100)\n");
+                printf("  -b <size>     Set buffer size in bytes (default: 4096)\n");
                 printf("  -h            Show this help message\n");
                 return 0;
             default:
-                printf("Usage: %s [-u update_percentage] [-h]\n", argv[0]);
+                printf("Usage: %s [-u update_percentage] [-b buffer_size] [-h]\n", argv[0]);
                 return 1;
         }
     }
