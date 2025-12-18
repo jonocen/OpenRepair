@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
-#include "libs/openrepair.h"
+#include "libs/partition_utils.h"
+#include "libs/device_utils.h"
+#include "libs/write_ops.h"
+#include "libs/interactive.h"
 //CLI
 int main(int argc, char *argv[]) {
     int update_interval = 100;
