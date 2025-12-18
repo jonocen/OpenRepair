@@ -5,6 +5,7 @@
 //CLI
 int main(int argc, char *argv[]) {
     int update_interval = 100;
+    int buffer_size;
     int opt;
     while ((opt = getopt(argc, argv, "u:h")) != -1) {
         switch (opt) {
@@ -14,6 +15,13 @@ int main(int argc, char *argv[]) {
                     printf("Invalid update percentage. Using default 100%%\n");
                     update_interval = 100;
                 }
+                break;
+            case 'b':
+                    buffer_size = atoi(optarg);
+                    if (buffer_size <= 0) {
+                        printf("no or invalid buffer size specified, using recommended default\n");
+                        buffer_size = 4096; 
+                    }
                 break;
             case 'h':
                 printf("OpenRepair - A tool for repairing Unix-Like systems and preparing drives\n");
@@ -32,7 +40,7 @@ int main(int argc, char *argv[]) {
     scanf(" %c", &response);
     
     if (response == 'y' || response == 'Y') {
-        format_device_interactive(update_interval);
+        format_device_interactive(update_interval, buffer_size);
     }
     
     return 0;
