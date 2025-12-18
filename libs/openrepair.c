@@ -45,7 +45,7 @@ unsigned long long get_device_size(const char *device_path) {
     return size;
 }
 
-int write_zeros_to_device(const char *device_path, int update_interval) {
+int write_zeros_to_device(const char *device_path, int update_interval, int input_buf) {
     FILE *fp = fopen(device_path, "wb");
     if (!fp) {
         perror("fopen device");
@@ -58,7 +58,10 @@ int write_zeros_to_device(const char *device_path, int update_interval) {
         return -1;
     }
     
-    char buffer[4096];
+    // change buffer if you want
+    char buffer[input_buf * 256]; // 1MB buffer
+    setvbuf(fp, NULL, _IOFBF, sizeof(buffer));
+    //now back to the other stuff
     memset(buffer, 0, sizeof(buffer));
     unsigned long total_blocks = device_size / sizeof(buffer);
     unsigned long interval = total_blocks / update_interval;
@@ -86,7 +89,7 @@ int write_zeros_to_device(const char *device_path, int update_interval) {
     return 0;
 }
 
-void format_device_interactive(int update_percent) {
+void format_device_interactive(int update_percent, int buffer_size) {
     PartitionList partitions = get_partitions();
     
     // Display menu
@@ -124,6 +127,6 @@ void format_device_interactive(int update_percent) {
     }
     
     // Write zeros
-    write_zeros_to_device(device_path, update_percent);
+    write_zeros_to_device(device_path, update_percent, buffer_size);
 
 }
