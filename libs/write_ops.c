@@ -70,6 +70,9 @@ int write_zeros_to_device(const char *device_path, int update_interval, int inpu
     // Ensure all data is flushed to device
     if (fsync(fileno(fp)) < 0) {
         perror("fsync");
+        free(buffer);
+        fclose(fp);
+        return -1;
     }
     
     free(buffer);
